@@ -41,6 +41,11 @@ module RpmSysinfo
 		@@libdir = "/usr/lib64"
 		@@go_arch = "ppc64le"
 	end
+  if @@rbarch == "s390x"
+    @@libdir = "/usr/lib64"
+    @@go_arch = "s390x"
+  end
+
 
 	def self.set_topdir(top)
 
