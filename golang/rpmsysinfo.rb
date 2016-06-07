@@ -25,6 +25,11 @@ module RpmSysinfo
 	if @@rbarch == "powerpc64le"
 		@@go_arch = "ppc64le"
 	end
+  if @@rbarch == "s390x"
+    @@libdir = "/usr/lib64"
+    @@go_arch = "s390x"
+  end
+
 
 	def self.get_builddir
 
