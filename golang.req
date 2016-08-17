@@ -1,10 +1,24 @@
 #!/usr/bin/env ruby
 
+if File.exist? "/tmp/shared"
+
 require '/usr/lib/rpm/golang/rpmsysinfo.rb'
 include RpmSysinfo
 buildroot = RpmSysinfo.get_buildroot
 contribdir = RpmSysinfo.get_go_contribdir
 importpath = RpmSysinfo.get_go_importpath
+
+def go_get_version()
+  IO.popen("go version") do |process|
+    process.each_line do |l|
+      # "go version go1.6.1 linux/amd64"
+      version_re = /^go version go([0-9]\.[0-9])(\.[0-9])?\s+([^\/]+)\/(.*)$/
+      md = version_re.match(l.chomp)
+      # 1:"1.6" 2:".1" or nil 3:"linux" 4:"amd64"
+      return md[1] if md
+    end
+  end
+end
 
 # read stdin for filelist rpm feeds us for a (sub) package
 filelist = []
@@ -21,6 +35,9 @@ end
 requires = []
 
 unless filelist.empty? then
+
+	requires << "golang(API) = " + go_get_version()
+
 	filelist.each do |f|
 		# unarchive .a
 		system("ar -x #{f} __.PKGDEF")
@@ -48,5 +65,7 @@ unless filelist.empty? then
 	requires.each do |p|
 		puts p
 	end
+
+end
 
 end

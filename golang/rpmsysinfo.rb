@@ -2,6 +2,18 @@ module RpmSysinfo
 
 	require 'rbconfig'
 
+	if File.directory?("/usr/src/packages") & File.writable?("/usr/src/packages")
+        	@@topdir = "/usr/src/packages"
+	else
+        	@@topdir = ENV["HOME"] + "/rpmbuild"
+	end
+
+        @@buildroot = Dir.glob(@@topdir + "/BUILDROOT/*")[0]
+
+        # sometimes buildroot locates in tmppath/name-version-build
+
+        @@buildroot = Dir.glob("/var/tmp/*-build")[0] if @@buildroot == nil
+
 	# x86_64-(gnu|linux|blabla...)
 	@@rbarch = RUBY_PLATFORM.gsub(/-.*$/,"")
 	# architectures are defined in /usr/lib/rpm/macros
@@ -31,13 +43,13 @@ module RpmSysinfo
 
 	def self.get_builddir
 
-		return ENV["RPM_BUILD_DIR"]
+		return @@topdir + "/BUILD"
 
 	end
 
 	def self.get_buildroot
 
-		return ENV["RPM_BUILD_ROOT"]
+		return @@buildroot
 
 	end
 
@@ -75,8 +87,8 @@ module RpmSysinfo
 
 		# this funtion is used in golang.prov/req only
 		# called after %go_prep
-		# so the simplest method is to read /tmp/importpath.txt
-		return open("/tmp/importpath.txt","r:UTF-8").gets.strip!        
+		# so the simplest method is to read /tmp/importpath
+		return open("/tmp/importpath","r:UTF-8").gets.strip!        
 
 	end
 
