@@ -2,6 +2,19 @@
 set -e
 set -x
 
+go_version() {
+  go version | awk '{print $3}' | sed 's/go//'
+}
+
+# version_lt exits 0 if the first version is less than the second
+# example:
+#   version_lt 1.9.3 1.10 && echo "yes"
+# will echo "yes"
+version_lt() {
+ rpmdev-vercmp $1 $2 > /dev/null
+ [ $? == 12 ] #rpmdev-vercmp returns 12 if the first version is less than the second
+}
+
 store_buildroot_path() {
   echo ${RPM_BUILD_ROOT} >| /tmp/buildrootpath.txt
 }
@@ -127,7 +140,16 @@ process_build() {
     local last=$(($#-1))
   fi
 
-  local build_flags="-s -v -p 4 -x -buildmode=pie"
+  local build_flags="-v -p 4 -x -buildmode=pie"
+  # Add s flag if go is older than 1.10.
+  # s flag is an openSUSE flag to fix
+  #  https://bugzilla.suse.com/show_bug.cgi?id=776058
+  # This flag is added with a patch in the openSUSE package, thus it only
+  # exists in openSUSE go packages, and only on versions < 1.10.
+  # In go >= 1.10, this bug is fixed upstream and the patch that was adding the
+  # s flag has been removed from the openSUSE packages.
+  ver=$(go_version)
+  version_lt $ver 1.10 && build_flags="-s $build_flags"
   local extra_flags=(
     "${@:1:$last}"
   )
