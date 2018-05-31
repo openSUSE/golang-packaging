@@ -127,7 +127,7 @@ process_build() {
     local last=$(($#-1))
   fi
 
-  local build_flags="-v -p 4 -x -buildmode=pie -ldflags=-s"
+  local build_flags="-s -v -p 4 -x -buildmode=pie"
   local extra_flags=(
     "${@:1:$last}"
   )
