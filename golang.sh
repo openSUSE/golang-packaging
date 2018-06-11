@@ -11,8 +11,7 @@ go_version() {
 #   version_lt 1.9.3 1.10 && echo "yes"
 # will echo "yes"
 version_lt() {
- rpmdev-vercmp $1 $2 > /dev/null
- [ $? == 12 ] #rpmdev-vercmp returns 12 if the first version is less than the second
+  [ $(printf "$1\n$2" | sort -V  | head -n1) == $1 ]
 }
 
 store_buildroot_path() {
