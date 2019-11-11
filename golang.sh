@@ -2,6 +2,9 @@
 set -e
 set -x
 
+# this is used most
+GO_CONTRIBSRCDIR=$(rpm --eval %go_contribsrcdir)
+
 go_version() {
   go version | awk '{print $3}' | sed 's/go//'
 }
@@ -54,7 +57,7 @@ get_contrib_path() {
 }
 
 get_source_path() {
-  echo $(rpm --eval %go_contribsrcdir)
+  echo $GO_CONTRIBSRCDIR
 }
 
 get_tool_path() {
