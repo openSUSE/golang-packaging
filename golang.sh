@@ -179,23 +179,17 @@ process_install() {
 }
 
 process_source() {
-  echo "This will copy all *.go, *.s and *.h files in $(get_build_path)/src without resources"
+  echo "This will copy all *.go, *.s, *.h, BUILD, BUILD.bazel and WORKSPACE files in $(get_build_path)/src without resources"
 
-  for file in $(find $(get_build_path)/src -type f -iname \*.go); do
-    local destination=${RPM_BUILD_ROOT}$(get_source_path)${file#$(get_build_path)/src/}
-
-    echo "Copying ${file} to ${destination}"
-    install -D -m0644 ${file} ${destination}
-  done
-
-  for file in $(find $(get_build_path)/src -type f -iname \*.s); do
-    local destination=${RPM_BUILD_ROOT}$(get_source_path)${file#$(get_build_path)/src/}
-
-    echo "Copying ${file} to ${destination}"
-    install -D -m0644 ${file} ${destination}
-  done
-
-  for file in $(find $(get_build_path)/src -type f -iname \*.h); do
+  local files=$(find $(get_build_path)/src \
+    -type f \
+    \( -iname "*.go" \
+    -o -iname "*.s" \
+    -o -iname "*.h" \
+    -o -iname "BUILD" \
+    -o -iname "BUILD.bazel" \
+    -o -iname "WORKSPACE" \))
+  for file in ${files}; do
     local destination=${RPM_BUILD_ROOT}$(get_source_path)${file#$(get_build_path)/src/}
 
     echo "Copying ${file} to ${destination}"
