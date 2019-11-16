@@ -1,3 +1,13 @@
+== update version 15.0.12 ==
+
+   * golang.sh: integrate ppc64-nopie.patch -buildmode=pie only on ppc64
+   * golang.sh: avoid excessive "rpm --eval..." calls
+   * Install Bazel files in src directory
+
+== update version 15.0.11 ==
+
+  * Replace rpmdev-vercmp by "sort -V" to remove rpmdev-vercmp dependency
+
 == update version 15.0.10 ==
   * Remove s flag for go version >= 1.10
 
