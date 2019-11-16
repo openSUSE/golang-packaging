@@ -142,7 +142,11 @@ process_build() {
     local last=$(($#-1))
   fi
 
-  local build_flags="-v -p 4 -x -buildmode=pie"
+  local build_flags="-v -p 4 -x"
+  case "$(uname -m)" in
+    ppc64) ;;
+    *) build_flags="$build_flags -buildmode=pie" ;;
+  esac
   # Add s flag if go is older than 1.10.
   # s flag is an openSUSE flag to fix
   #  https://bugzilla.suse.com/show_bug.cgi?id=776058
