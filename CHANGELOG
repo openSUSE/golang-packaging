@@ -1,3 +1,7 @@
+== update version 15.0.13 ==
+
+   * golang.sh: Preserve modification time of source files for reproducible builds
+
 == update version 15.0.12 ==
 
    * golang.sh: integrate ppc64-nopie.patch -buildmode=pie only on ppc64
