@@ -108,10 +108,10 @@ process_prepare() {
   mkdir -p $(get_buildcontrib_path)/src
 
   echo "Copying files to $(get_destination_path)"
-  cp -rT $(pwd) $(get_destination_path)/
+  cp -rpT $(pwd) $(get_destination_path)/
 
   echo "Copying deps to $(get_buildcontrib_path)"
-  cp -rT $(get_gocontrib_path)/src $(get_buildcontrib_path)/src
+  cp -rpT $(get_gocontrib_path)/src $(get_buildcontrib_path)/src
 
   local contrib_dir=${RPM_BUILD_ROOT}$(get_contrib_path)
   echo "Creating contrib path ${contrib_dir}"
