@@ -144,7 +144,7 @@ process_build() {
 
   local build_flags="-v -p 4 -x"
   case "$(uname -m)" in
-    ppc64) ;;
+    ppc64|riscv64) ;;
     *) build_flags="$build_flags -buildmode=pie" ;;
   esac
   # Add s flag if go is older than 1.10.

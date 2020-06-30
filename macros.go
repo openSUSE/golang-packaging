@@ -24,7 +24,7 @@
 %define __arch_install_post export NO_BRP_STRIP_DEBUG=true
 
 %go_exclusivearch \
-ExclusiveArch: aarch64 %ix86 x86_64 %arm ppc64 ppc64le s390x
+ExclusiveArch: aarch64 %ix86 x86_64 %arm ppc64 ppc64le s390x riscv64
 
 %go_provides \
 %if 0%{?suse_version} <= 1110 \
