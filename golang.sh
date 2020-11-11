@@ -112,22 +112,6 @@ process_prepare() {
 
   echo "Copying deps to $(get_buildcontrib_path)"
   cp -rpT $(get_gocontrib_path)/src $(get_buildcontrib_path)/src
-
-  local contrib_dir=${RPM_BUILD_ROOT}$(get_contrib_path)
-  echo "Creating contrib path ${contrib_dir}"
-  mkdir -p ${contrib_dir}
-
-  local source_dir=${RPM_BUILD_ROOT}$(get_source_path)
-  echo "Creating source path ${source_dir}"
-  mkdir -p ${source_dir}
-
-  local tool_dir=${RPM_BUILD_ROOT}$(get_tool_path)
-  echo "Creating tool path ${tool_dir}"
-  mkdir -p ${tool_dir}
-
-  local binary_dir=${RPM_BUILD_ROOT}$(get_binary_path)
-  echo "Creating binary path ${binary_dir}"
-  mkdir -p ${binary_dir}
 }
 
 process_build() {
@@ -179,6 +163,18 @@ process_build() {
 process_install() {
   check_import_path
 
+  local contrib_dir=${RPM_BUILD_ROOT}$(get_contrib_path)
+  echo "Creating contrib path ${contrib_dir}"
+  mkdir -p ${contrib_dir}
+
+  local tool_dir=${RPM_BUILD_ROOT}$(get_tool_path)
+  echo "Creating tool path ${tool_dir}"
+  mkdir -p ${tool_dir}
+
+  local binary_dir=${RPM_BUILD_ROOT}$(get_binary_path)
+  echo "Creating binary path ${binary_dir}"
+  mkdir -p ${binary_dir}
+
   for file in $(find $(get_gobin_path) -type f); do
     echo "Copying $(basename ${file}) to ${RPM_BUILD_ROOT}$(get_binary_path)"
     install -D -m0755 ${file} ${RPM_BUILD_ROOT}$(get_binary_path)
@@ -186,6 +182,10 @@ process_install() {
 }
 
 process_source() {
+  local source_dir=${RPM_BUILD_ROOT}$(get_source_path)
+  echo "Creating source path ${source_dir}"
+  mkdir -p ${source_dir}
+
   echo "This will copy all *.go, *.s, *.h, BUILD, BUILD.bazel and WORKSPACE files in $(get_build_path)/src without resources"
 
   local files=$(find $(get_build_path)/src \
