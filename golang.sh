@@ -164,16 +164,22 @@ process_install() {
   check_import_path
 
   local contrib_dir=${RPM_BUILD_ROOT}$(get_contrib_path)
+  [ -d ${contrib_dir} ] || (
   echo "Creating contrib path ${contrib_dir}"
   mkdir -p ${contrib_dir}
+  )
 
   local tool_dir=${RPM_BUILD_ROOT}$(get_tool_path)
+  [ -d ${tool_dir} ] || (
   echo "Creating tool path ${tool_dir}"
   mkdir -p ${tool_dir}
+  )
 
   local binary_dir=${RPM_BUILD_ROOT}$(get_binary_path)
+  [ -d ${binary_dir} ] || (
   echo "Creating binary path ${binary_dir}"
   mkdir -p ${binary_dir}
+  )
 
   for file in $(find $(get_gobin_path) -type f); do
     echo "Copying $(basename ${file}) to ${RPM_BUILD_ROOT}$(get_binary_path)"
@@ -183,8 +189,10 @@ process_install() {
 
 process_source() {
   local source_dir=${RPM_BUILD_ROOT}$(get_source_path)
+  [ -d ${source_dir} ] || (
   echo "Creating source path ${source_dir}"
   mkdir -p ${source_dir}
+  )
 
   echo "This will copy all *.go, *.s, *.h, BUILD, BUILD.bazel and WORKSPACE files in $(get_build_path)/src without resources"
 
@@ -230,6 +238,12 @@ process_filelist() {
   local file_list="file.lst"
 
   rm -f ${file_list}
+
+  local source_dir=${RPM_BUILD_ROOT}$(get_source_path)
+  [ -d ${source_dir} ] || (
+  echo "Creating source path ${source_dir}"
+  mkdir -p ${source_dir}
+  )
 
   for path in $(find ${RPM_BUILD_ROOT}$(get_source_path)); do
     local destination=${path#${RPM_BUILD_ROOT}}
