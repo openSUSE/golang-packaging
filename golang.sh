@@ -231,6 +231,12 @@ process_filelist() {
 
   rm -f ${file_list}
 
+  local source_dir=${RPM_BUILD_ROOT}$(get_source_path)
+  [ -d ${source_dir} ] || (
+  echo "Creating source path ${source_dir}"
+  mkdir -p ${source_dir}
+  )
+
   for path in $(find ${RPM_BUILD_ROOT}$(get_source_path)); do
     local destination=${path#${RPM_BUILD_ROOT}}
 
