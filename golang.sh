@@ -111,7 +111,7 @@ process_prepare() {
   cp -rpT $(pwd) $(get_destination_path)/
 
   echo "Copying deps to $(get_buildcontrib_path)"
-  cp -rpT $(get_gocontrib_path)/src $(get_buildcontrib_path)/src
+  cp -rpT $(get_gocontrib_path)/src $(get_buildcontrib_path)/src || :
 }
 
 process_build() {

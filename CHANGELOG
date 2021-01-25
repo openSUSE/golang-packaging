@@ -1,3 +1,5 @@
+   * golang.sh: Don't throw an error on prep if $(get_gocontrib_path) does not exist.
+
 == update version 15.0.13 ==
 
    * golang.sh: Preserve modification time of source files for reproducible builds
